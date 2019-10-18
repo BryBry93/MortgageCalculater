@@ -27,7 +27,7 @@ import math                     # for the log base equ.
 getcontext().prec = 5   # most results are given as 5 digits: $xxx.xx ; need to use .prec()=6 if values are $xxxx.xx
 
 
-"Part 1   Prompting User info"
+#"Part 1   Prompting User info"
 
 print("Please include cents when inputing the requested amounts.")
 spb = int(input("Enter the starting principal Balance: "))
@@ -37,7 +37,7 @@ p_ir = float(input("Enter interest rate: "))
 
 ir = p_ir / 100 / 12
 
-"Part 2   Calculating Monlty payment information"
+#"Part 2   Calculating Monlty payment information"
 
 
 if spb == cpp:
@@ -85,7 +85,7 @@ else:
 
 
 
-						" Outputing table "
+						#" Outputing table "
 """
 print("Total Monthly Payment \n Principal \n Interest")
 for x in range(1,m+1):          # the total number of periods
@@ -152,8 +152,8 @@ else:
 
 
 
-"Part 4"   
-    					""" Outputing an Amortization Table --- Not using Plotly, just prints 3 columns """
+#"Part 4"   
+#    				""" Outputing an Amortization Table --- Not using Plotly, just prints 3 columns """
 
 """for x in range(m):          # the total number of periods
     print()

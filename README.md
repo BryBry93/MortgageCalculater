@@ -11,20 +11,21 @@ Goal: Mortgage calculator for Balloon Fixed Rate  - has Maturity Balloon Payment
 		2) Calc monthly payments -  show Monthy Payment Total(mtp), Monthly Interest paid(intst_m), monthly princal payment(mpp), 
 		new Principal balance(npb), Projected months to pay off(M_left), 
 		and mbp - call these Account Details
-		3) Prompt user for additional Principal payment (Y/N) (Q: Would you like to see how an additional princial payment will affect..) and output modified 
-			a)Prompt user: How much would you like to pay monlthy? (mp) --- must be larger than Monthly Interest paid(intst_m) / if not ask for a higher value
+		3) Prompt user for additional Principal payment (Y/N) (Q: Would you like to see how an additional princial payment will 			affect..) and output modified 
+			a)Prompt user: How much would you like to pay monlthy? (mp) --- must be larger than Monthly Interest paid(intst_m) 				/ if not ask for a higher value
 			b) Project the new montly payment and corrsp details
 
 		4) Project Next month's Account details - output as chart
 """
 
 
-from decimal import *
+from decimal import *   "https://docs.python.org/2/library/decimal.html / set getcontext().prec = 5 & getcontext().rounding = ROUND_FLOOR"
 import plotly.plotly as py
 import plotly.graph_objs as go
 import math                     # for the log base equ.
 
 getcontext().prec = 5   # most results are given as 5 digits: $xxx.xx ; need to use .prec()=6 if values are $xxxx.xx
+getcontext().rounding = ROUND_FLOOR
 
 
 #"Part 1   Prompting User info"

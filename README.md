@@ -1,5 +1,4 @@
-# MortgageCalculater
-Mortgage calculator for a Balloon Fixed Rate  - has Maturity Balloon Payment
+# Mortgage calculator for a Balloon Fixed Rate  - has Maturity Balloon Payment
 
 """
 My Mortage calculator
@@ -28,7 +27,7 @@ getcontext().prec = 5   # most results are given as 5 digits: $xxx.xx ; need to 
 getcontext().rounding = ROUND_FLOOR
 
 
-#"Part 1   Prompting User info"
+#Part 1   Prompting User info
 
 print("Please include cents when inputing the requested amounts.")
 spb = int(input("Enter the starting principal Balance: "))
@@ -38,130 +37,42 @@ p_ir = float(input("Enter interest rate: "))
 
 ir = p_ir / 100 / 12
 
-#"Part 2   Calculating Monlty payment information"
+#Part 2   Calculating Monlty payment information
 
 
-if spb == cpp:
-    rate1 = ir*(1+ir)**m
-    rate2 = ((1+ir)**m)-1
-    total_1 = Decimal(rate1)/Decimal(rate2)  
-    total_m_payment = Decimal(cpp) * Decimal(total_1)
-else:
-    rate1 = ir*(1+ir)**m
-    rate2 = ((1+ir)**m)-1
-    total_1 = Decimal(rate1)/Decimal(rate2)  
-    total_m_payment = Decimal(cpp) * Decimal(total_1)
-    
-mtp = total_m_payment				# The total Payment due this month
-intst_m = Decimal(ir)*Decimal(cpp)  # Amount Monlthy towards interest
-mpp = mtp - intst_m     			# Amount Monthly towards Principal
+try:
+    numer = float(percent_ir)*current_pp
+    denom = 12*(1-(1+percent_ir/12)**(-12*m))
+except DivisionByZero:
+    print("Sorry division by zero")
+
+amort = Decimal(numer) / Decimal(denom)# The total Payment due this month
+   
+intst_per_M = Decimal(i_r)*Decimal(current_pp)  #Amount Monlthy towards interest
+mpp = Decimal(amort) - intstperM    		# Amount Monthly towards Principal
+
+print("Your Total Monthly payment for a ",m," term mortgage at an interest rate of ",p_ir," percent is: $",amort)
+print("Payment towards Principal: ",mpp,"\nPayment from interest: $",intst_per_M)
+
 
 # Calc the number of months left on the loan
-m_remain = -math.log((1-Decimal(ir)*Decimal(cpp))/mtp)/math.log(1+Decimal(ir)) # Contains build error on math; prabably dev(0) or Decimal
-""" Months = -(log( 1 - int*PresntBalnc/MonthlyPayment)) / (log(1+int))
+"""
+Months = -(log( 1 - int*PresntBalnc/MonthlyPayment)) / (log(1+int))
 This is key if: spb != cpp, so that PresentBalnce is cpp, and the output Months wont be equal to initial user input value, m 
 """ 
-
-print("Your Total Monthly payment for a {0} term mortgage at an interest rate of {1} percent is: ${2}".format(m, p_ir, mtp))
-print("Payment towards Principal: ${0}  Payment from interest: ${1}".format(mpp,intst_m))
-print("And it will take another, {0} Months to pay off".format(m_remain))
-
-""" Optional Remaining months method - Testing not Complete
-remain = str(input("Would you like to know how many months are left to finished off paying? '\n': y/n"))
-if remain == y:
-    # Calc the number of months left on the loan
-    x = (Decimal(ir)*Decimal(cpp)
-     
-    y = math.log(1-(x/Decimal(cpp)))
-     
-    z = math.log(1+Decimal(ir))
-     
-    m_remain = ((-1)*y)/(z)
-    print("And it will take another, {0} Months to pay off".format(m_remain))
-elif remain == n:
-    pass
-else:
-    continue
-"""
-
-
-
-						#" Outputing table "
-"""
-print("Total Monthly Payment \n Principal \n Interest")
-for x in range(1,m+1):          # the total number of periods
-    #print("Total  Principal Payment  Interest Payment")
-    print()      
-    print("Total Monthly Payment: ${0} Principal: ${1} Interest: ${2}".format(mtp,mpp,m),end="\t")  # "output information"
-"""
-
-y3 = input("Would you like to see an Amortization Table for your payments?")
-if y3 == "Yes":
-    z = 1
-    while z <= m:
-        rate1 = ir*(1+ir)**z
-        rate2 = ((1+ir)**z)-1
-        total_1 = Decimal(rate1)/Decimal(rate2)  
-        total_m_payment = Decimal(cpp) * Decimal(total_1)
+def remainingMonths():
+    remain = input("Would you like to know how many months are left to finished off paying? \n: y/n")
+    if remain != 'y' and remain != 'n':
+            remain = input("Invalid input.\nWould you like to know how many months are left to finished off paying? \n y/n:")
+            remainingMonths()
+    elif remain == 'y':
+        intst_per_M = Decimal(i_r)*Decimal(current_pp)
+        mpp = Decimal(amort) - intstperM    # Amount Monthly towards Principal
+        m_remain_t = math.log((1-i_r*(float(current_pp)/float(amort))))
+        m_remain_b = math.log(1+i_r)
+        m_remain = -m_remain_t / m_remain_b
+        print("It will take another",str(m_remain)[:4]," Months to pay off")
+    elif remain == 'n':
+        print('bye then')
         
-        mtp_3 = total_m_payment			  # The total Payment due this month
-        intst_m = Decimal(ir)*Decimal(cpp)# Amount Monlthy towards interest
-        mpp = mtp_3 - intst_m
-        
-        new_cpp = Decimal(cpp) - Decimal(mpp)
-        new_intst_m = Decimal(ir)*Decimal(new_cpp)
-        
-        print("new_cpp = ",new_cpp)
-        
-        print()
-        print("Total Payment: ${0} Principal Payment: ${1} Interest Payment: ${2}".format(mtp,mpp,intst_m))
-        z += 1 
-
-        """      !!!!!!!!!! Using Plotly, basic table  !!!!!!!!
-        trace = go.Table(
-            header=dict(values=['Total Payment', 'Payment to Principal', 'Payment from Interest']),
-            cells=dict(values=[[100, 90, 80, 90],[95, 85, 75, 95]]))
-
-        data = [trace] 
-        py.iplot(data, filename = 'amortization_table')
-        """
-elif y3 == "No":
-    print("Thank You and Goodbye.")
-else:
-    y3 = str(input("Sorry please re-enter your decicion, Yes or No? \tWould you like a projection that considers additional principal payments?: "))
-
-
-
-
-
-"Part 3    Prompting user for Additional Monthly payments"
-y1 = str(input("Would you like a projection that considers additional principal payments, Yes/No: "))
-if y1 == 'Yes':
-    add = float(input("How much would you like to add to your monthly payment?"))
-    aug_mtp = mpp + intst_m + add  		# The new current monthly payment
-    aug_mpp = (mtp - intst_m) + add     # Amount Monthly towards Principal
-    intst_m = Decimal(ir)*Decimal(cpp)  # Amount Monlthy towards interest
-
-    print("Your total Monthly payment is:${0} \tPayment towards Principal: ${1}  \tPayment from interest: ${2}".format(aug_mtp,aug_mpp,intst_m))
-elif y1 == 'No':
-	print("Thank You and Goodbye.")
-else:
-    y2 = str(input("Sorry please re-enter your decicion, Yes or No? \tWould you like a projection that considers additional principal payments?: "))
-
-
-
-
-
-
-#"Part 4"   
-#    				""" Outputing an Amortization Table --- Not using Plotly, just prints 3 columns """
-
-"""for x in range(m):          # the total number of periods
-    print()
-    for y in range(1,4):      # the columns needs for pric pay, total, ints pay etc.
-        print("$"(aug_mtp,aug_mpp,intst_m).format,end="\t")  # "output information"
-"""
-
-for x in range(1,m+1):          # the total number of periods
-    print()      
-    print("Total Monthly Payment: ${0} Principal: ${1} Interest: ${2}".format(aug_mtp,aug_mpp,intst_m),end="\t")  # "output information"
+remainingMonths()
